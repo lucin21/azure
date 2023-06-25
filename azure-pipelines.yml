@@ -1,6 +1,6 @@
 # Python to Linux Web App on Azure
 # Build your Python project and deploy it to Azure as a Linux Web App.
-# Change python version to one thats appropriate for your application.
+# Change python version to one that's appropriate for your application.
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
@@ -42,7 +42,6 @@ stages:
         python -m venv antenv
         source antenv/bin/activate
         python -m pip install --upgrade pip
-        pip install setup
         pip install -r requirements.txt
       workingDirectory: $(projectRoot)
       displayName: "Install requirements"
@@ -60,9 +59,32 @@ stages:
       displayName: 'Upload package'
       artifact: drop
 
+- stage: Test
+  displayName: 'Run Unit Tests'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: TestJob
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python version'
+
+    - script: |
+        python -m venv antenv
+        source antenv/bin/activate
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python -m unittest discover
+      workingDirectory: $(projectRoot)
+      displayName: "Run Unit Tests"
+
 - stage: Deploy
   displayName: 'Deploy Web App'
-  dependsOn: Build
+  dependsOn: Test
   condition: succeeded()
   jobs:
   - deployment: DeploymentJob
