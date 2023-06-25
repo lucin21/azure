@@ -12,4 +12,4 @@ class Terceros(unittest.TestCase):
         self.assertEquals(2,2, "Fallo la prueba 2")
 
     def test_producto_envio_domicilio3(self):
-        self.assertEquals(2,3, "Fallo la prueba 3")
+        self.assertEquals(2,4, "Fallo la prueba 3")
