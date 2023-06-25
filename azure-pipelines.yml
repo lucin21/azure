@@ -85,3 +85,18 @@ stages:
               azureSubscription: $(azureServiceConnectionId)
               appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+
+  # Criterios de aprobación
+  - deployment: ApprovalJob
+    displayName: 'Approval'
+    dependsOn: DeploymentJob
+    condition: succeeded()
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: ManualIntervention@1
+            inputs:
+              instructions: 'Review and approve the deployment'
+              timeoutInMinutes: 1440
