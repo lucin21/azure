@@ -1,0 +1,7 @@
+/applications/alerts/migrations/
+/applications/favorites/migrations/
+/applications/job_offers/migrations/0001_initial.py
+/applications/job_offers/migrations/__init__.py
+/applications/users/migrations/0001_initial.py
+/applications/users/migrations/__init__.py
+/venv/
