@@ -5,7 +5,7 @@ from .models import Job
 
 
 class Index(TemplateView):
-    template_name = "index_new.html"
+    template_name = "index.html"
 
 class About(TemplateView):
     template_name = "home/about.html"
